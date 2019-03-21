@@ -20,6 +20,21 @@ export default new Router({
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
       component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
+    },
+    {
+      path: '/get-started',
+      name: 'getstarted',
+      component: () => import(/* webpackChunkName: "get-started" */ './views/GetStarted.vue')
+    },
+    {
+      path: '/login-callback',
+      name: 'logincallback',
+      component: () => import(/* webpackChunkName: "get-started" */ './views/LoginCallback.vue')
+    },
+    {
+      path: '/add',
+      name: 'add',
+      component: () => import(/* webpackChunkName: "get-started" */ './views/Add.vue')
     }
   ]
 })
