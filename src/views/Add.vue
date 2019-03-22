@@ -86,7 +86,8 @@ export default {
         gitlabSettings: {
           gitlabToken: '',
           projectId: '',
-          gitRef: ''
+          gitRef: '',
+          gitEndpoint: 'https://gitlab.com/'
         }
       },
       boards: [],

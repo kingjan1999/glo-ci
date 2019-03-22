@@ -1,6 +1,18 @@
 <template>
   <div>
     <b-form-group
+      label="GitLab Endpoint"
+      label-for="gitEndpoint"
+      description="Endpoint of the GitLab instance (ex. https://gitlab.com/"
+    >
+      <b-input
+        id="gitEndpoint"
+        required
+        :value="value.gitEndpoint"
+        @input="(value) => emitEvent('gitEndpoint', value)"
+      />
+    </b-form-group>
+    <b-form-group
       label="Trigger Token"
       label-for="gitlabToken"
       description="Create a new trigger on the CI/CD settings page of your GitLab project."
