@@ -14,6 +14,7 @@
 </template>
 
 <script>
+import { BACKEND_URL } from '@/vars.js'
 const axios = require('axios')
 
 export default {
@@ -49,6 +50,7 @@ export default {
     this.token = localStorage.getItem('token')
     if (!this.token) {
       this.$router.push('/?unauth=true')
+      return
     }
     this.fetchData()
   },
@@ -56,14 +58,11 @@ export default {
     async fetchData () {
       const loader = this.$loading.show()
       try {
-        const response = await axios.get(
-          'http://localhost:3000/v1/integration',
-          {
-            headers: {
-              Authorization: 'Bearer ' + this.token
-            }
+        const response = await axios.get(BACKEND_URL + '/integration', {
+          headers: {
+            Authorization: 'Bearer ' + this.token
           }
-        )
+        })
         this.integrations = response.data.integrations || []
       } catch (err) {
         console.log(err)
@@ -89,7 +88,7 @@ export default {
       const loader = this.$loading.show()
       try {
         const response = await axios.delete(
-          'http://localhost:3000/v1/integration/' + id,
+          BACKEND_URL + '/integration/' + id,
           {
             headers: {
               Authorization: 'Bearer ' + this.token

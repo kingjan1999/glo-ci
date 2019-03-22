@@ -1,12 +1,19 @@
 <template>
   <div>
-    <b-button variant="warning" href="http://localhost:3000/v1/auth/login/gitkraken">Login with GitKraken</b-button>
+    <b-button variant="warning" :href="BACKEND_URL + '/auth/login/gitkraken'">Login with GitKraken</b-button>
   </div>
 </template>
 
 <script>
+import { BACKEND_URL } from '@/vars.js'
+
 export default {
   name: 'getstarted',
-  components: {}
+  components: {},
+  data () {
+    return {
+      BACKEND_URL
+    }
+  }
 }
 </script>

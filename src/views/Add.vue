@@ -57,9 +57,10 @@
 <script>
 import TravisSettings from '@/components/TravisSettings.vue'
 import GitlabSettings from '@/components/GitlabSettings.vue'
+import { BACKEND_URL } from '@/vars.js'
 
 const axios = require('axios')
-const proxyUrl = 'http://localhost:3000/v1/gitkraken/proxy'
+const proxyUrl = BACKEND_URL + '/gitkraken/proxy'
 const idNameMapper = ({ name, id }) => ({
   text: name,
   value: id
@@ -103,6 +104,7 @@ export default {
     this.token = localStorage.getItem('token')
     if (!this.token) {
       this.$router.push('/?unauth=true')
+      return
     }
     this.fetchData()
   },
@@ -137,7 +139,7 @@ export default {
       const loader = this.$loading.show()
       try {
         const response = await axios.post(
-          'http://localhost:3000/v1/integration/',
+          BACKEND_URL + '/integration/',
           this.form,
           {
             headers: {
