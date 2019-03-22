@@ -38,11 +38,26 @@
           v-model="form.columnFailed"
         />
       </b-form-group>
+      <b-form-group label="CI Provider" label-for="ciProvider">
+        <b-form-radio-group
+          id="ciProvider"
+          v-model="form.ciProvider"
+          :options="ciProviderOptions"
+          name="ciProvider"
+        />
+      </b-form-group>
+      <TravisSettings v-model="form.travisSettings" v-if="form.ciProvider === 'travis'"/>
+      <GitlabSettings v-model="form.gitlabSettings" v-if="form.ciProvider === 'gitlab'"/>
+
+      <b-button type="submit" variant="success">Add Integration</b-button>
     </b-form>
   </div>
 </template>
 
 <script>
+import TravisSettings from '@/components/TravisSettings.vue'
+import GitlabSettings from '@/components/GitlabSettings.vue'
+
 const axios = require('axios')
 const proxyUrl = 'http://localhost:3000/v1/gitkraken/proxy'
 const idNameMapper = ({ name, id }) => ({
@@ -52,7 +67,7 @@ const idNameMapper = ({ name, id }) => ({
 
 export default {
   name: 'add',
-  components: {},
+  components: { TravisSettings, GitlabSettings },
   data () {
     return {
       token: '',
@@ -60,11 +75,27 @@ export default {
         board: null,
         columnTrigger: null,
         columnSuccess: null,
-        columnFailed: null
+        columnFailed: null,
+        ciProvider: 'travis',
+        travisSettings: {
+          travisBranch: null,
+          travisRepo: null,
+          travisToken: '',
+          travisEndpoint: null
+        },
+        gitlabSettings: {
+          gitlabToken: '',
+          projectId: '',
+          gitRef: ''
+        }
       },
       boards: [],
       allBoards: [],
-      columns: []
+      columns: [],
+      ciProviderOptions: [
+        { text: 'Travis CI', value: 'travis' },
+        { text: 'GitLab CI', value: 'gitlab' }
+      ]
     }
   },
   created () {
@@ -76,21 +107,57 @@ export default {
   },
   methods: {
     async fetchData () {
-      this.allBoards = (await axios.get(proxyUrl + '/boards', {
-        headers: {
-          Authorization: 'Bearer ' + this.token
-        },
-        params: {
-          fields: ['columns', 'name', 'id']
-        }
-      })).data
-      this.boards = this.allBoards.map(idNameMapper)
+      const loader = this.$loading.show()
+      try {
+        this.allBoards = (await axios.get(proxyUrl + '/boards', {
+          headers: {
+            Authorization: 'Bearer ' + this.token
+          },
+          params: {
+            fields: ['columns', 'name', 'id']
+          }
+        })).data
+        this.boards = this.allBoards.map(idNameMapper)
+      } catch (err) {
+        console.log(err)
+        this.$swal(
+          'Error',
+          'An error occured while attempting to fetch your glo boards',
+          'error'
+        )
+      }
+      loader.hide()
     },
     updateColumns (boardId) {
       const board = this.allBoards.find(x => x.id === boardId)
       this.columns = board.columns.map(idNameMapper)
     },
-    onSubmit () {}
+    async onSubmit () {
+      const loader = this.$loading.show()
+      try {
+        const response = await axios.post(
+          'http://localhost:3000/v1/integration/',
+          this.form,
+          {
+            headers: {
+              Authorization: 'Bearer ' + this.token
+            }
+          }
+        )
+        const data = response.data
+        console.log(data)
+        await this.$swal(
+          'Success!',
+          'The integration has been created. The webhook url is: ' +
+            data.webhook_url,
+          'success'
+        )
+        this.$router.push('/manage')
+      } catch (err) {
+        this.$swal('Error', 'Error while submitting the integration.', 'error')
+      }
+      loader.hide()
+    }
   }
 }
 </script>
