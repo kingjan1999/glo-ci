@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "start": "http-server dist/",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
@@ -35,6 +36,7 @@
     "babel-jest": "^23.6.0",
     "eslint": "^5.8.0",
     "eslint-plugin-vue": "^5.0.0",
+    "http-server": "^0.11.1",
     "lint-staged": "^8.1.4",
     "vue-template-compiler": "^2.5.21"
   },
