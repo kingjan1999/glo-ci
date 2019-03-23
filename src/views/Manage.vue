@@ -27,6 +27,8 @@ export default {
       tableFields: [
         'board',
         { key: 'ci_provider', label: 'CI Provider' },
+        'webhook_url',
+        'secret',
         'more'
       ]
     }
@@ -41,6 +43,8 @@ export default {
         return {
           id: integration._id,
           board: integration.board.name,
+          secret: integration.secret,
+          webhook_url: integration.webhook_url,
           ci_provider: readableProvider[integration.ciProvider]
         }
       })
