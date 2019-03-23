@@ -3,10 +3,11 @@
 </template>
 
 <script>
+import { setToken } from '@/util/auth.js'
 const qs = require('qs')
 
 export default {
-  name: 'getstarted',
+  name: 'logincallback',
   components: {},
   async created () {
     const parsedQuery = qs.parse(window.location.search, {
@@ -14,7 +15,7 @@ export default {
     })
     console.log(parsedQuery)
     const token = parsedQuery.token
-    localStorage.setItem('token', token)
+    setToken(token)
 
     await this.$swal('Login successful', 'Your login was successful', 'success')
     this.$router.push('/manage')

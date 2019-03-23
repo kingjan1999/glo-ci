@@ -1,10 +1,11 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
+import { hasValidToken } from './util/auth'
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [
@@ -23,12 +24,6 @@ export default new Router({
         import(/* webpackChunkName: "about" */ './views/About.vue')
     },
     {
-      path: '/get-started',
-      name: 'getstarted',
-      component: () =>
-        import(/* webpackChunkName: "get-started" */ './views/GetStarted.vue')
-    },
-    {
       path: '/login-callback',
       name: 'logincallback',
       component: () =>
@@ -37,13 +32,34 @@ export default new Router({
     {
       path: '/add',
       name: 'add',
-      component: () => import(/* webpackChunkName: "add" */ './views/Add.vue')
+      component: () => import(/* webpackChunkName: "add" */ './views/Add.vue'),
+      meta: { requiresAuth: true }
     },
     {
       path: '/manage',
       name: 'manage',
       component: () =>
-        import(/* webpackChunkName: "manage" */ './views/Manage.vue')
+        import(/* webpackChunkName: "manage" */ './views/Manage.vue'),
+      meta: { requiresAuth: true }
     }
   ]
 })
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    // this route requires auth, check if logged in
+    // if not, redirect to login page.
+    if (!hasValidToken()) {
+      next({
+        path: '/',
+        query: { redirect: to.fullPath }
+      })
+    } else {
+      next()
+    }
+  } else {
+    next() // make sure to always call next()!
+  }
+})
+
+export default router

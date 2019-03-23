@@ -58,6 +58,7 @@
 import TravisSettings from '@/components/TravisSettings.vue'
 import GitlabSettings from '@/components/GitlabSettings.vue'
 import { BACKEND_URL } from '@/vars.js'
+import { getToken } from '@/util/auth.js'
 
 const axios = require('axios')
 const proxyUrl = BACKEND_URL + '/gitkraken/proxy'
@@ -101,11 +102,7 @@ export default {
     }
   },
   created () {
-    this.token = localStorage.getItem('token')
-    if (!this.token) {
-      this.$router.push('/?unauth=true')
-      return
-    }
+    this.token = getToken()
     this.fetchData()
   },
   methods: {
