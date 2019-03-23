@@ -8,38 +8,54 @@
       <b-input
         @input="(value) => fetchRepos('travisToken', value)"
         id="travisToken"
+        name="travisToken"
         required
         v-model="value.travisToken"
+        v-validate="'required'"
+        :state="validateState('travisToken')"
       />
+      <b-form-invalid-feedback id="travisTokenFeedback">This is a required field.</b-form-invalid-feedback>
     </b-form-group>
     <b-form-group label="Select endpoint" label-for="travisEndpoint">
       <b-form-select
         @input="(value) => fetchRepos('travisEndpoint', value)"
         id="travisEndpoint"
+        name="travisEndpoint"
         :options="endpoints"
         required
+        v-validate="'required'"
         v-model="value.travisEndpoint"
+        :state="validateState('travisEndpoint')"
       />
+      <b-form-invalid-feedback id="travisEndpointFeedback">This is a required field.</b-form-invalid-feedback>
     </b-form-group>
     <b-form-group label="Select repository to trigger" label-for="travisRepo">
       <b-form-select
         @input="(value) => fetchBranches('travisRepo', value)"
         :disabled="!value.travisToken || !value.travisEndpoint"
         id="travisRepo"
+        name="travisRepo"
         :options="repos"
         required
+        v-validate="'required'"
         v-model="value.travisRepo"
+        :state="validateState('travisRepo')"
       />
+      <b-form-invalid-feedback id="travisRepoFeedback">This is a required field.</b-form-invalid-feedback>
     </b-form-group>
     <b-form-group label="Select branch to build" label-for="travisBranch">
       <b-form-select
         @input="(value) => emitEvent('travisBranch', value)"
         :disabled="!value.travisToken || !value.travisEndpoint || !value.travisRepo"
         id="travisBranch"
+        name="travisBranch"
         :options="branches"
         required
+        v-validate="'required'"
         :value="value.travisBranch"
+        :state="validateState('travisBranch')"
       />
+      <b-form-invalid-feedback id="travisBranchFeedback">This is a required field.</b-form-invalid-feedback>
     </b-form-group>
   </div>
 </template>
@@ -49,6 +65,7 @@ const axios = require('axios')
 export default {
   name: 'TravisSettings',
   props: ['value'],
+  inject: ['parentValidator'],
   data () {
     return {
       endpoints: [
@@ -58,6 +75,9 @@ export default {
       repos: [],
       branches: []
     }
+  },
+  created () {
+    this.$validator = this.parentValidator
   },
   methods: {
     async fetchRepos (key, newValue) {
@@ -94,7 +114,9 @@ export default {
         !this.value.travisToken ||
         !this.value.travisEndpoint ||
         !this.value.travisRepo
-      ) { return }
+      ) {
+        return
+      }
       const loader = this.$loading.show()
       const url =
         this.value.travisEndpoint +
@@ -126,6 +148,16 @@ export default {
         .map(({ name }) => ({ value: name, text: name }))
       loader.hide()
     },
+    validateState (ref) {
+      if (
+        this.veeFields[ref] &&
+        (this.veeFields[ref].dirty || this.veeFields[ref].validated)
+      ) {
+        return !this.errors.has(ref)
+      }
+      return null
+    },
+
     emitEvent (key, value) {
       this.$emit('input', { ...this.value, [key]: value })
     }

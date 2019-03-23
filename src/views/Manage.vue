@@ -27,7 +27,7 @@ export default {
       tableFields: [
         'board',
         { key: 'ci_provider', label: 'CI Provider' },
-        'webhook_url',
+        { key: 'webhook_url', label: 'Webhook URL' },
         'secret',
         'more'
       ]
