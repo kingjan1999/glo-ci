@@ -24,6 +24,12 @@ const router = new Router({
         import(/* webpackChunkName: "about" */ './views/About.vue')
     },
     {
+      path: '/how-to',
+      name: 'howto',
+      component: () =>
+        import(/* webpackChunkName: "howto" */ './views/HowTo.vue')
+    },
+    {
       path: '/login-callback',
       name: 'logincallback',
       component: () =>

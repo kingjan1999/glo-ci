@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>Manage your integrations</h2>
+    <h2 class="text-center">Manage your integrations</h2>
     <b-table :fields="tableFields" striped hover :items="tableItems">
       <template slot="more" slot-scope="data">
         <b-button-group class="mx-1">
@@ -9,7 +9,7 @@
         </b-button-group>
       </template>
     </b-table>
-    <b-btn :to="'/add'">Add new</b-btn>
+    <b-btn :to="'/add'" variant="success">Add new</b-btn>
   </div>
 </template>
 
@@ -106,3 +106,8 @@ export default {
   }
 }
 </script>
+<style scoped>
+table {
+  color: #d0d0d2;
+}
+</style>

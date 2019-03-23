@@ -1,7 +1,9 @@
 <template>
   <div class="home">
-    <b-jumbotron header="Glo-CI" lead="CI Integration for GitKraken Glo">
-      <p>Trigger CI builds from Glo boards</p>
+    <b-jumbotron header="Glo CI" lead="CI Integration for GitKraken Glo">
+      <p>With Glo CI you can trigger your CI / CD builds by moving a card in a specific column.
+        When the build succeeds / fails the card can then be moved in another column.
+        Supported providers are Gitlab CI and Travis CI.</p>
       <b-button variant="warning" :href="authUrl" v-if="!loggedIn">Login with GitKraken</b-button>
       <b-button variant="warning" :href="'/manage'" v-if="loggedIn">Manage your integrations</b-button>
     </b-jumbotron>
