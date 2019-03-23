@@ -4,7 +4,7 @@
     <b-table :fields="tableFields" striped hover :items="tableItems">
       <template slot="more" slot-scope="data">
         <b-button-group class="mx-1">
-          <!-- <b-button variant="warning" :to="'/edit/' + data.item.id">Edit</b-button> -->
+          <b-button variant="warning" :to="'/edit/' + data.item.id">Edit</b-button>
           <b-button @click="deleteIntegration(data.item.id)" variant="danger">Delete</b-button>
         </b-button-group>
       </template>

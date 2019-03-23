@@ -32,7 +32,15 @@ const router = new Router({
     {
       path: '/add',
       name: 'add',
-      component: () => import(/* webpackChunkName: "add" */ './views/Add.vue'),
+      component: () =>
+        import(/* webpackChunkName: "integrationForm" */ './views/Integration.vue'),
+      meta: { requiresAuth: true }
+    },
+    {
+      path: '/edit/:id',
+      name: 'edit',
+      component: () =>
+        import(/* webpackChunkName: "integrationForm" */ './views/Integration.vue'),
       meta: { requiresAuth: true }
     },
     {

@@ -1,4 +1,7 @@
 import jwt from 'jsonwebtoken'
+import Axios from 'axios'
+
+import { BACKEND_URL } from '@/vars.js'
 
 export const hasValidToken = () => {
   const token = getToken()
@@ -15,4 +18,13 @@ export const getToken = () => {
 
 export const setToken = token => {
   return localStorage.setItem('token', token)
+}
+
+export const getAxiosInstance = () => {
+  return Axios.create({
+    headers: {
+      Authorization: 'Bearer ' + getToken()
+    },
+    baseURL: BACKEND_URL
+  })
 }

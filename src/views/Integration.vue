@@ -1,11 +1,19 @@
 <template>
   <div class="container">
-    <h2>Add new integration</h2>
+    <h2 v-if="isEditing">Edit integration</h2>
+    <h2 v-else>Add new integration</h2>
+    <div v-if="isEditing" class="secrets">
+      <strong>Webhook URL: &nbsp;</strong>
+      <code>{{form.webhook_url}}</code>
+      <br>
+      <strong>Secret: &nbsp;</strong>
+      <code>{{form.secret}}</code>
+    </div>
     <b-form @submit.prevent="onSubmit">
       <b-form-group label="Glo Board" label-for="gloBoard">
         <b-form-select
           @change="updateColumns"
-          v-validate="{ required: true }"
+          v-validate="'required'"
           id="gloBoard"
           name="gloBoard"
           :options="boards"
@@ -23,7 +31,7 @@
           :options="columns"
           required
           v-model="form.columnTrigger"
-          v-validate="{ required: true }"
+          v-validate="'required'"
           :state="validateState('form.columnTrigger')"
         />
         <b-form-invalid-feedback id="columnTriggerFeedback">This is a required field</b-form-invalid-feedback>
@@ -36,7 +44,7 @@
           :options="columns"
           required
           v-model="form.columnSuccess"
-          v-validate
+          v-validate="'required'"
           :state="validateState('form.columnSuccess')"
         />
         <b-form-invalid-feedback id="columnSuccessFeedback">This is a required field</b-form-invalid-feedback>
@@ -49,7 +57,7 @@
           :options="columns"
           required
           v-model="form.columnFailed"
-          v-validate
+          v-validate="'required'"
           :state="validateState('form.columnFailed')"
         />
         <b-form-invalid-feedback id="columnFailedFeedback">This is a required field</b-form-invalid-feedback>
@@ -60,7 +68,7 @@
           v-model="form.ciProvider"
           :options="ciProviderOptions"
           name="ciProvider"
-          v-validate
+          v-validate="'required'"
           :state="validateState('form.ciProvider')"
         />
         <b-form-invalid-feedback id="ciProviderFeedback">This is a required field</b-form-invalid-feedback>
@@ -68,7 +76,7 @@
       <TravisSettings v-model="form.travisSettings" v-if="form.ciProvider === 'travis'"/>
       <GitlabSettings v-model="form.gitlabSettings" v-if="form.ciProvider === 'gitlab'"/>
 
-      <b-button type="submit" variant="success" :disabled="errors.any()">Add Integration</b-button>
+      <b-button type="submit" variant="success" :disabled="errors.any()">Save Integration</b-button>
     </b-form>
   </div>
 </template>
@@ -76,18 +84,16 @@
 <script>
 import TravisSettings from '@/components/TravisSettings.vue'
 import GitlabSettings from '@/components/GitlabSettings.vue'
-import { BACKEND_URL } from '@/vars.js'
-import { getToken } from '@/util/auth.js'
+import { getToken, getAxiosInstance } from '@/util/auth.js'
 
-const axios = require('axios')
-const proxyUrl = BACKEND_URL + '/gitkraken/proxy'
+const proxyUrl = '/gitkraken/proxy'
 const idNameMapper = ({ name, id }) => ({
   text: name,
   value: id
 })
 
 export default {
-  name: 'add',
+  name: 'integration',
   components: { TravisSettings, GitlabSettings },
   data () {
     return {
@@ -120,6 +126,11 @@ export default {
       ]
     }
   },
+  computed: {
+    isEditing () {
+      return !!this.$route.params.id
+    }
+  },
   created () {
     this.token = getToken()
     this.fetchData()
@@ -131,20 +142,23 @@ export default {
     async fetchData () {
       const loader = this.$loading.show()
       try {
-        this.allBoards = (await axios.get(proxyUrl + '/boards', {
-          headers: {
-            Authorization: 'Bearer ' + this.token
-          },
+        this.allBoards = (await getAxiosInstance().get(proxyUrl + '/boards', {
           params: {
             fields: ['columns', 'name', 'id']
           }
         })).data
         this.boards = this.allBoards.map(idNameMapper)
+        if (this.isEditing) {
+          this.form = (await getAxiosInstance().get(
+            '/integration/' + this.$route.params.id
+          )).data
+          this.updateColumns(this.form.board)
+        }
       } catch (err) {
         console.log(err)
         this.$swal(
           'Error',
-          'An error occured while attempting to fetch your glo boards',
+          'An error occured while attempting to fetch data from backend',
           'error'
         )
       }
@@ -169,22 +183,18 @@ export default {
       if (this.errors.any()) return
       const loader = this.$loading.show()
       try {
-        const response = await axios.post(
-          BACKEND_URL + '/integration/',
-          this.form,
-          {
-            headers: {
-              Authorization: 'Bearer ' + this.token
-            }
-          }
+        const response = await getAxiosInstance().post(
+          '/integration/' + (this.isEditing ? this.form._id : ''),
+          this.form
         )
         const data = response.data
         console.log(data)
+        const verb = this.isEditing ? 'updated' : 'created'
         await this.$swal(
           'Success!',
-          'The integration has been created. The webhook url is: ' +
-            data.webhook_url +
-            '. Please configure the webhooks.',
+          `The integration has been ${verb}. The webhook url is: ${
+            data.webhook_url
+          }. Please configure the webhooks.`,
           'success'
         )
         this.$router.push('/manage')
@@ -196,3 +206,9 @@ export default {
   }
 }
 </script>
+
+<style lang="css" scoped>
+.secrets {
+  margin: 2em 0;
+}
+</style>

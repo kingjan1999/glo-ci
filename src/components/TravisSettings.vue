@@ -78,6 +78,8 @@ export default {
   },
   created () {
     this.$validator = this.parentValidator
+    this.fetchRepos('travisToken', this.value.travisToken)
+    this.fetchBranches('travisRepo', this.value.travisRepo)
   },
   methods: {
     async fetchRepos (key, newValue) {
