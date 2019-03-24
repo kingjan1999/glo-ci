@@ -23,7 +23,7 @@
             <router-link class="header-footer-link" to="/about">About</router-link>
           </li>
           <li>
-            <router-link class="header-footer-link" to="/about">Imprint</router-link>
+            <router-link class="header-footer-link" to="/imprint">Imprint</router-link>
           </li>
         </ul>
         <p class="copyright">

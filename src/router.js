@@ -30,6 +30,12 @@ const router = new Router({
         import(/* webpackChunkName: "howto" */ './views/HowTo.vue')
     },
     {
+      path: '/imprint',
+      name: 'imprint',
+      component: () =>
+        import(/* webpackChunkName: "imprint" */ './views/Imprint.vue')
+    },
+    {
       path: '/login-callback',
       name: 'logincallback',
       component: () =>
