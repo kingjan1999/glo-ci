@@ -1,5 +1,6 @@
 {
   "version": 2,
+  "alias": ["glo-ci.xyz", "www.glo-ci.xyz"],
   "name": "glo-ci",
   "builds": [{ "src": "package.json", "use": "@now/static-build" }],
   "routes": [
@@ -17,6 +18,11 @@
       "src": "^/img/(.*)",
       "headers": { "cache-control": "max-age=31536000,immutable" },
       "dest": "/img/$1"
+    },
+    {
+      "src": "^/(manifest\\.json|service-worker\\.js|robots\\.txt|.*\\.js)$",
+      "headers": { "cache-control": "max-age=31536000,immutable" },
+      "dest": "/$1"
     },
     {
       "src": ".*",

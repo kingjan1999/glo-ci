@@ -1,7 +1,7 @@
 let url = 'http://localhost:3000/v1'
 
 if (process.env.NODE_ENV === 'production') {
-  url = 'https://r.kluster.app/v1'
+  url = 'https://glo-ci.backend.g.kluster.app/v1'
 }
 
 // eslint-disable-next-line no-undef

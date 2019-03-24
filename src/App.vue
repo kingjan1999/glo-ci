@@ -9,7 +9,7 @@
           <b-nav-item class="header-footer-link" to="/">Home</b-nav-item>
           <b-nav-item class="header-footer-link" to="/manage">Manage</b-nav-item>
           <b-nav-item class="header-footer-link" to="/how-to">How To</b-nav-item>
-          <b-nav-item class="header-footer-link" v-if="loggedIn">Logout</b-nav-item>
+          <b-nav-item class="header-footer-link" @click="logout" v-if="loggedIn">Logout</b-nav-item>
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
@@ -48,7 +48,7 @@ export default {
   methods: {
     logout () {
       localStorage.clear()
-      this.$router.push('/')
+      window.location.reload(true)
     }
   }
 }
