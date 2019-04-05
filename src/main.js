@@ -5,6 +5,7 @@ import VueSwal from 'vue-swal'
 import VeeValidate from 'vee-validate'
 
 import * as Sentry from '@sentry/browser'
+import * as Integrations from '@sentry/integrations'
 
 import App from './App.vue'
 import router from './router'
@@ -30,7 +31,7 @@ if (NODE_ENV === 'production') {
   Sentry.init({
     dsn: 'https://b57b8dbaac2f4116aacc69d0d1b27786@sentry.io/1432442',
     integrations: [
-      new Sentry.Integrations.Vue({
+      new Integrations.Vue({
         Vue,
         attachProps: true
       })
