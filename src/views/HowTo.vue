@@ -99,5 +99,10 @@
       >
       with GitLab. Please activate only Pipeline and Build events
     </p>
+    <p>
+      <em>Note:</em> Glo CI is unable to move your cards in the success / failed
+      column if more than 24 hours have passed between triggering and completing
+      the build.
+    </p>
   </div>
 </template>
