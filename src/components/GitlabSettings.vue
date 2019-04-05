@@ -3,7 +3,7 @@
     <b-form-group
       label="GitLab Endpoint"
       label-for="gitEndpoint"
-      description="Endpoint of the GitLab instance (ex. https://gitlab.com/"
+      description="Endpoint of the GitLab instance (ex. https://gitlab.com/)"
     >
       <b-input
         id="gitEndpoint"

@@ -11,3 +11,4 @@ if (typeof SERVER_URL !== 'undefined' && SERVER_URL) {
 }
 
 export const BACKEND_URL = url
+export const NODE_ENV = process.env.NODE_ENV

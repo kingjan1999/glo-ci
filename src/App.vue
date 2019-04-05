@@ -35,7 +35,7 @@
   </div>
 </template>
 <script>
-import { hasValidToken } from '@/util/auth.js'
+import { hasValidToken, clearToken } from '@/util/auth.js'
 
 export default {
   name: 'app',
@@ -47,7 +47,7 @@ export default {
   },
   methods: {
     logout () {
-      localStorage.clear()
+      clearToken()
       window.location.reload(true)
     }
   }
