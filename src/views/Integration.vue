@@ -18,7 +18,7 @@
           name="gloBoard"
           :options="boards"
           required
-          :state="validateState('form.board')"
+          :state="validateState('gloBoard')"
           v-model="form.board"
         />
         <b-form-invalid-feedback id="gloBoardFeedback">This is a required field</b-form-invalid-feedback>
@@ -32,9 +32,9 @@
           required
           v-model="form.columnTrigger"
           v-validate="'required'"
-          :state="validateState('form.columnTrigger')"
+          :state="validateState('columnTrigger')"
         />
-        <b-form-invalid-feedback id="columnTriggerFeedback">This is a required field</b-form-invalid-feedback>
+        <b-form-invalid-feedback id="columnTriggerFeedback">This is a required field.</b-form-invalid-feedback>
       </b-form-group>
       <b-form-group label="Move into column when job was successful" label-for="columnSuccess">
         <b-form-select
@@ -44,10 +44,10 @@
           :options="columns"
           required
           v-model="form.columnSuccess"
-          v-validate="'required'"
-          :state="validateState('form.columnSuccess')"
+          v-validate="{required: true, is_not: form.columnTrigger}"
+          :state="validateState('columnSuccess')"
         />
-        <b-form-invalid-feedback id="columnSuccessFeedback">This is a required field</b-form-invalid-feedback>
+        <b-form-invalid-feedback id="columnSuccessFeedback">This is a required field and can't be the same as the trigger column.</b-form-invalid-feedback>
       </b-form-group>
       <b-form-group label="Move into column when job failed" label-for="columnFailed">
         <b-form-select
@@ -57,10 +57,10 @@
           :options="columns"
           required
           v-model="form.columnFailed"
-          v-validate="'required'"
-          :state="validateState('form.columnFailed')"
+          v-validate="{required: true, is_not: form.columnTrigger}"
+          :state="validateState('columnFailed')"
         />
-        <b-form-invalid-feedback id="columnFailedFeedback">This is a required field</b-form-invalid-feedback>
+        <b-form-invalid-feedback id="columnFailedFeedback">This is a required field and can't be the same as the trigger column.</b-form-invalid-feedback>
       </b-form-group>
       <b-form-group label="CI Provider" label-for="ciProvider">
         <b-form-radio-group
@@ -69,7 +69,7 @@
           :options="ciProviderOptions"
           name="ciProvider"
           v-validate="'required'"
-          :state="validateState('form.ciProvider')"
+          :state="validateState('ciProvider')"
         />
         <b-form-invalid-feedback id="ciProviderFeedback">This is a required field</b-form-invalid-feedback>
       </b-form-group>
@@ -169,7 +169,7 @@ export default {
       this.columns = board.columns.map(idNameMapper)
     },
     validateState (ref) {
-      // console.log('validating...')
+      console.log('validating...')
       if (
         this.veeFields[ref] &&
         (this.veeFields[ref].dirty || this.veeFields[ref].validated)

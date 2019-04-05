@@ -15,6 +15,7 @@
 
 <script>
 import { BACKEND_URL } from '@/vars.js'
+import { getToken } from '@/util/auth.js'
 const axios = require('axios')
 
 export default {
@@ -51,7 +52,7 @@ export default {
     }
   },
   created () {
-    this.token = localStorage.getItem('token')
+    this.token = getToken()
     this.fetchData()
   },
   methods: {

@@ -13,11 +13,15 @@ export const hasValidToken = () => {
 }
 
 export const getToken = () => {
-  return localStorage.getItem('token')
+  return sessionStorage.getItem('token')
 }
 
 export const setToken = token => {
-  return localStorage.setItem('token', token)
+  return sessionStorage.setItem('token', token)
+}
+
+export const clearToken = () => {
+  sessionStorage.clear()
 }
 
 export const getAxiosInstance = () => {
