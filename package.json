@@ -1,6 +1,6 @@
 {
   "name": "glo-ci",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "private": true,
   "scripts": {
     "start": "npx serve",
@@ -15,6 +15,7 @@
   "dependencies": {
     "@axosoft/glo-sdk": "^1.0.7",
     "@sentry/browser": "^5.0.5",
+    "@sentry/integrations": "^5.0.5",
     "axios": "^0.18.0",
     "bootstrap": "^4.3.1",
     "bootstrap-vue": "^2.0.0-rc.15",
