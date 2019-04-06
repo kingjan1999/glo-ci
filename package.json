@@ -43,6 +43,7 @@
     "babel-jest": "^24.7.1",
     "eslint": "^5.8.0",
     "eslint-plugin-vue": "^5.0.0",
+    "favicons-webpack-plugin": "^0.0.9",
     "lint-staged": "^8.1.4",
     "serve": "^11.0.0",
     "vue-template-compiler": "^2.5.21"

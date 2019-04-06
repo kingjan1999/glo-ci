@@ -1,7 +1,9 @@
 <template>
   <div id="app">
     <b-navbar>
-      <b-navbar-brand to="/">Glo CI</b-navbar-brand>
+      <b-navbar-brand to="/">
+        <img src="@/assets/hatchful/logo_transparent.png" class="d-inline-block align-top"> Glo CI
+      </b-navbar-brand>
 
       <b-navbar-toggle target="nav_collapse"/>
       <b-collapse is-nav id="nav_collapse">
@@ -79,6 +81,11 @@ export default {
 #nav a.router-link-exact-active {
   color: #42b983;
 } */
+
+.navbar-brand > img {
+  height: 1.5em;
+  padding-right: 0.5em;
+}
 
 #app > .container {
   margin-top: 2em;
