@@ -31,15 +31,21 @@
           <br>&copy; Jan Beckmann 2019
         </p>
       </div>
+      <cookie-law
+        theme="dark-lime"
+        message="When logged in, this website uses a cookie or a similar storage techniques to keep you logged in.
+        This is an essential cookie. Additionally, your cookie preference is stored."
+      ></cookie-law>
     </footer>
   </div>
 </template>
 <script>
+import CookieLaw from 'vue-cookie-law'
 import { hasValidToken, clearToken } from '@/util/auth.js'
 
 export default {
   name: 'app',
-  components: {},
+  components: { CookieLaw },
   computed: {
     loggedIn () {
       return hasValidToken()
