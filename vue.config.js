@@ -12,7 +12,8 @@ module.exports = {
       new FaviconsWebpackPlugin({
         logo: './public/img/logo.png',
         prefix: 'icons/',
-        title: 'Glo CI'
+        title: 'Glo CI',
+        background: '#141422'
       })
     ]
   },
