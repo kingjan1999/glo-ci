@@ -20,6 +20,11 @@
       "dest": "/img/$1"
     },
     {
+      "src": "^/icons/(.*)",
+      "headers": { "cache-control": "max-age=31536000,immutable" },
+      "dest": "/icons/$1"
+    },
+    {
       "src": "^/(manifest\\.json|service-worker\\.js|robots\\.txt|.*\\.js)$",
       "headers": { "cache-control": "max-age=31536000,immutable" },
       "dest": "/$1"
