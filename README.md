@@ -1,6 +1,6 @@
 # glo-ci
 
-This is the frontend for Glo CI. The backend can be found at [kingjan1999/glo-ci-server](https://github.com/kingjan199/glo-ci-server)
+This is the frontend for Glo CI. The backend can be found at [kingjan1999/glo-ci-server](https://github.com/kingjan1999/glo-ci-server)
 The up and running app can be found at [https://www.glo-ci.xyz](https://www.glo-ci.xyz)
 
 ## Project setup
